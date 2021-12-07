@@ -78,16 +78,22 @@ document.addEventListener("DOMContentLoaded", function(){
   };
 
   const treatLyrics = (lyrics) => {
-    // TODO: words or sentences ?
-    // const tokenizedLyrics = lyrics.split(' '); 
-    const tokenizedLyrics = lyrics.split('\n'); 
-    // TODO: randomize splice index
-    // +1 because : slice(startIndex, endIndex IS EXCLUDED)
-    const randomizedSlice = 18;
-    // const toFindText = tokenizedLyrics.slice(randomizedSlice, (randomizedSlice + 5 + 1)); // TODO: keep 5 missing words to find ?
-    const toFindText = tokenizedLyrics[randomizedSlice];
+
+    // Seperate each sentence and put them in array tokenizedLyrics
+    const tokenizedLyrics = lyrics
+                                .split('\n')
+                                .filter((sentence) => sentence != ''); 
+
+    const randomizedIndex = Math.floor(Math.random() * (tokenizedLyrics.length - 1) + 1);
+    // const randomizedIndex = 18;
+
+    const toFindText = tokenizedLyrics[randomizedIndex];
+
     // console.log('tokenized ::', tokenizedLyrics);
-    const lyricsText = tokenizedLyrics.slice(0, randomizedSlice - 1).join('\n');
+    const lyricsText = tokenizedLyrics
+                                .slice(0, randomizedIndex)
+                                .join('\n');
+
     console.log('lyrics cut ::', lyricsText);
 
     return {
