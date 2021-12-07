@@ -1,126 +1,134 @@
-var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
-var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
-var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+document.addEventListener("DOMContentLoaded", function(){
 
-var phrases = [
-  { songTitle: 'Show must go on', lang: 'en-US' },
-  { songTitle: 'Singing in the rain', lang: 'en-US' },
-  { songTitle: 'Monsieur Madame', lang: 'fr' },
-  { songTitle: 'Pour que tu m\'aimes encore', lang: 'fr' },
-  { songTitle: 'Chandelier', lang: 'en-US' },
-  { songTitle: 'Courage to change', lang: 'en-US' },
-  { songTitle: 'Le dîner', lang: 'fr' },
-  { songTitle: 'La berceuse', lang: 'fr' },
-];
 
-var phrasePara = document.querySelector('.phrase');
-var resultPara = document.querySelector('.result');
-var diagnosticPara = document.querySelector('.output');
 
-var testBtn = document.querySelector('button');
+  const _startGameBtn = document.getElementById('start-game');
+  const _songPlayer = document.getElementById('song-player');
+  const _lyrics = document.getElementById('lyrics');
+  const _a = document.querySelector('input[id="a"]');
+  const _b = document.querySelector('input[id="b"]');
+  const _c = document.querySelector('input[id="c"]');
+  const _d = document.querySelector('input[id="d"]');
 
-function randomPhrase() {
-  var number = Math.floor(Math.random() * phrases.length);
-  return number;
-}
+  var scoreState = 0;
 
-function testSpeech() {
-  testBtn.disabled = true;
-  testBtn.textContent = 'Test in progress';
+  // Adventure Of A Lifetime, Coldplay
+  const fakeLyrics = `Turn your magic on
+  To me she'd say
+  Everything you want's a dream away
+  We are legends
+  Every day
+  That's what she told him!
 
-  var songData = phrases[randomPhrase()];
-  var phrase = songData.songTitle;
-  // To ensure case consistency while checking with the returned output text
-  phrase = phrase.toLowerCase();
-  phrasePara.textContent = phrase;
-  resultPara.textContent = 'Right or wrong?';
-  resultPara.style.background = 'rgba(0,0,0,0.2)';
-  diagnosticPara.textContent = '...diagnostic messages';
+  Turn your magic on
+  To me she'd say
+  Everything you want's a dream away
+  Under this pressure, under this weight
+  We are diamonds
 
-  var grammar = '#JSGF V1.0; grammar phrase; public <phrase> = ' + phrase +';';
-  var recognition = new SpeechRecognition();
-  var speechRecognitionList = new SpeechGrammarList();
-  speechRecognitionList.addFromString(grammar, 1);
-  recognition.grammars = speechRecognitionList;
-  // recognition.lang = 'en-US';
-  recognition.lang = songData.lang;
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
+  I feel my heart beating
+  I feel my heart beneath my skin
+  I feel my heart beating
 
-  recognition.start();
 
-  recognition.onresult = function(event) {
-    // The SpeechRecognitionEvent results property returns a SpeechRecognitionResultList object
-    // The SpeechRecognitionResultList object contains SpeechRecognitionResult objects.
-    // It has a getter so it can be accessed like an array
-    // The first [0] returns the SpeechRecognitionResult at position 0.
-    // Each SpeechRecognitionResult object contains SpeechRecognitionAlternative objects that contain individual results.
-    // These also have getters so they can be accessed like arrays.
-    // The second [0] returns the SpeechRecognitionAlternative at position 0.
-    // We then return the transcript property of the SpeechRecognitionAlternative object 
-    var speechResult = event.results[0][0].transcript.toLowerCase();
-    diagnosticPara.textContent = 'Speech received: ' + speechResult + '.';
-    if(speechResult === phrase) {
-      resultPara.textContent = 'I heard the correct phrase!';
-      resultPara.style.background = 'lime';
-    } else {
-      resultPara.textContent = 'That didn\'t sound right.';
-      resultPara.style.background = 'red';
+  Ohhh, you make me feel
+  Like I'm alive again
+  Alive again
+  Ohhh, you make me feel
+  Like I'm alive again
+
+  Said I can't go on, not in this way
+  I'm a dream, I die by light of day
+  Gonna hold up half the sky and say
+  Ohhh, we are omen
+
+  I feel my heart beating
+  I feel my heart beneath my skin
+  Ohhh, I can feel my heart beating
+  Cause you make me feel
+  Like I'm alive again
+  Alive again...
+
+  Ohhh, you make me feel
+  Like I'm alive again
+
+  Turn your magic on, to me she'd say
+  Everything you want's a dream away
+  Under this pressure, under this weight
+
+  We are diamonds taking shape!
+  We are diamonds taking shape!
+
+  If we've only got this life
+  Then this adventure, more than I
+  And if we've only got this life
+  You'll get me through alive
+  And if we've only got this life
+  Then this adventure, more than I
+  Wanna share with you
+  With you, with you
+
+  I said, oh, say oh
+
+  Woo hoo, woo hoo...`
+
+  const SONG = {
+    src: 'Mariah_Carey-All_I_Want_for_Christmas_Is_You.mp4',
+    lyrics: fakeLyrics,
+  };
+
+  const treatLyrics = (lyrics) => {
+    // TODO: words or sentences ?
+    // const tokenizedLyrics = lyrics.split(' '); 
+    const tokenizedLyrics = lyrics.split('\n'); 
+    // TODO: randomize splice index
+    // +1 because : slice(startIndex, endIndex IS EXCLUDED)
+    const randomizedSlice = 18;
+    // const toFindText = tokenizedLyrics.slice(randomizedSlice, (randomizedSlice + 5 + 1)); // TODO: keep 5 missing words to find ?
+    const toFindText = tokenizedLyrics[randomizedSlice];
+    // console.log('tokenized ::', tokenizedLyrics);
+    const lyricsText = tokenizedLyrics.slice(0, randomizedSlice - 1).join('\n');
+    console.log('lyrics cut ::', lyricsText);
+
+    return {
+      toFindText,
+      lyricsText,
     }
+  };
 
-    console.log('Speech Reco Confidence: ' + event.results[0][0].confidence);
-  }
+  // Function Start Game
+  // Cut lyrics + create correct & wrong answers
+  const startGame = (song) => {
+    // _songPlayer.src = song.src;
+    console.log('Starting game...');
 
-  recognition.onspeechend = function() {
-    recognition.stop();
-    testBtn.disabled = false;
-    testBtn.textContent = 'Start new test';
-  }
+    const { toFindText, lyricsText } = treatLyrics(song.lyrics);
 
-  recognition.onerror = function(event) {
-    testBtn.disabled = false;
-    testBtn.textContent = 'Start new test';
-    diagnosticPara.textContent = 'Error occurred in recognition: ' + event.error;
-  }
-  
-  recognition.onaudiostart = function(event) {
-      //Fired when the user agent has started to capture audio.
-      console.log('SpeechRecognition.onaudiostart');
-  }
-  
-  recognition.onaudioend = function(event) {
-      //Fired when the user agent has finished capturing audio.
-      console.log('SpeechRecognition.onaudioend');
-  }
-  
-  recognition.onend = function(event) {
-      //Fired when the speech recognition service has disconnected.
-      console.log('SpeechRecognition.onend');
-  }
-  
-  recognition.onnomatch = function(event) {
-      //Fired when the speech recognition service returns a final result with no significant recognition. This may involve some degree of recognition, which doesn't meet or exceed the confidence threshold.
-      console.log('SpeechRecognition.onnomatch');
-  }
-  
-  recognition.onsoundstart = function(event) {
-      //Fired when any sound — recognisable speech or not — has been detected.
-      console.log('SpeechRecognition.onsoundstart');
-  }
-  
-  recognition.onsoundend = function(event) {
-      //Fired when any sound — recognisable speech or not — has stopped being detected.
-      console.log('SpeechRecognition.onsoundend');
-  }
-  
-  recognition.onspeechstart = function (event) {
-      //Fired when sound that is recognised by the speech recognition service as speech has been detected.
-      console.log('SpeechRecognition.onspeechstart');
-  }
-  recognition.onstart = function(event) {
-      //Fired when the speech recognition service has begun listening to incoming audio with intent to recognize grammars associated with the current SpeechRecognition.
-      console.log('SpeechRecognition.onstart');
-  }
-}
+    _lyrics.innerText = lyricsText;
+    
+    console.log('To find::', toFindText);
+    // TODO: random correct letter
+    _a.value = toFindText;
+    _a.classList.add('correct');
 
-testBtn.addEventListener('click', testSpeech);
+    _b.value = 'Some WRONG answer';
+    _b.classList.add('wrong');
+
+    _c.value = 'Another WRONG answer';
+    _c.classList.add('wrong');
+
+    _d.value = 'Yet another WRONG answer';
+    _d.classList.add('wrong');
+  };
+
+  _startGameBtn.addEventListener('click', () => {
+    
+    startGame(SONG);
+
+    // _songPlayer.play();
+    // _songPlayer.pause();
+    // answ-c rm hidden
+    // document.getElementById('answer-container').classList.remove('hidden');
+    // start chrono
+  });
+});
