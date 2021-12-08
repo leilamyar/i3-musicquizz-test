@@ -1,19 +1,24 @@
 document.addEventListener("DOMContentLoaded", function(){
 
-
-
+  // ===================================================
+  // =============== ELEM from the DOM =================
+  // ===================================================
   const _startGameBtn = document.getElementById('start-game');
-  const _songPlayer = document.getElementById('song-player');
   const _lyrics = document.getElementById('lyrics');
+  const _answerContainer = document.getElementById('answer-container');
   const _a = document.querySelector('input[id="a"]');
   const _b = document.querySelector('input[id="b"]');
   const _c = document.querySelector('input[id="c"]');
   const _d = document.querySelector('input[id="d"]');
+  const _radioInputs = document.querySelectorAll('input[type="radio"]');
+  _radioInputs.forEach((ri) => ri.checked = false );
 
-  var scoreState = 0;
-
-  // Adventure Of A Lifetime, Coldplay
-  const fakeLyrics = `Turn your magic on
+  // ===================================================
+  // =============== DATA from Database ================
+  // ===================================================
+  // Lyrics Example
+  // Adventure Of A Lifetime by Coldplay
+  const lyrics = `Turn your magic on
   To me she'd say
   Everything you want's a dream away
   We are legends
@@ -72,17 +77,47 @@ document.addEventListener("DOMContentLoaded", function(){
 
   Woo hoo, woo hoo...`
 
+  // MOCK song object
   const SONG = {
-    src: 'Mariah_Carey-All_I_Want_for_Christmas_Is_You.mp4',
-    lyrics: fakeLyrics,
+    title: 'Adventure Of A Lifetime',
+    artist: 'Coldplay',
+    lyrics,
   };
+
+
+  // ===================================================
+  // ================= GAME STATE ======================
+  // ===================================================
+
+  var scoreState = 0;
+  var answerChoices = 0;
+
+
+  // ===================================================
+  // =============== GAME FUNCTIONS ====================
+  // ===================================================
+
+  // Function listenToAnswers
+  // Getting all checkboxes, and listen to whenever there're checked
+  const listenToAnswers = () => {
+    document.querySelectorAll("input")
+        .forEach((radio) => {
+          radio.addEventListener("change", function(event) {
+            let radio = event.target;
+            if (radio.checked) {
+              console.log('checked answer is correct ? :', radio.dataset.isCorrect);
+            };
+          });
+        });
+  }
 
   const treatLyrics = (lyrics) => {
 
     // Seperate each sentence and put them in array tokenizedLyrics
     const tokenizedLyrics = lyrics
                                 .split('\n')
-                                .filter((sentence) => sentence != ''); 
+                                .map((l) => l.trim())
+                                .filter((sentence) => sentence != ''); // TODO: keep paragraphs ? (for maybe slider)
 
     const randomizedIndex = Math.floor(Math.random() * (tokenizedLyrics.length - 1) + 1);
     // const randomizedIndex = 18;
@@ -94,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function(){
                                 .slice(0, randomizedIndex)
                                 .join('\n');
 
-    console.log('lyrics cut ::', lyricsText);
+    // console.log('lyrics cut ::', lyricsText);
 
     return {
       toFindText,
@@ -102,39 +137,49 @@ document.addEventListener("DOMContentLoaded", function(){
     }
   };
 
-  // Function Start Game
-  // Cut lyrics + create correct & wrong answers
-  const startGame = (song) => {
-    // _songPlayer.src = song.src;
-    console.log('Starting game...');
-
-    const { toFindText, lyricsText } = treatLyrics(song.lyrics);
-
-    _lyrics.innerText = lyricsText;
-    
-    console.log('To find::', toFindText);
+  const makeAnswerChoices = (correctText) => {
     // TODO: random correct letter
-    _a.value = toFindText;
-    _a.classList.add('correct');
+    // const randomCorrect = 'b';
+
+    _a.value = correctText;
+    _a.setAttribute('data-is-correct', true);
 
     _b.value = 'Some WRONG answer';
-    _b.classList.add('wrong');
+    _b.setAttribute('data-is-correct', false);
 
     _c.value = 'Another WRONG answer';
-    _c.classList.add('wrong');
+    _c.setAttribute('data-is-correct', false);
 
     _d.value = 'Yet another WRONG answer';
-    _d.classList.add('wrong');
+    _d.setAttribute('data-is-correct', false);
+  };
+  // Function Start Game
+  // Treat lyrics & create correct & wrong answers
+  const initGame = (song) => {
+    // _songPlayer.src = song.src;
+      console.log('Starting game...');
+    
+    const { toFindText, lyricsText } = treatLyrics(song.lyrics);
+    
+      console.log('Lyrics to find ::', toFindText);
+
+    _lyrics.innerText = lyricsText;
+
+    makeAnswerChoices(toFindText);
+    
+    _answerContainer.removeAttribute('hidden');
+
+
+
   };
 
+  // ===================================================
+  // ===================  ze GAME  =====================
+  // ===================================================
   _startGameBtn.addEventListener('click', () => {
     
-    startGame(SONG);
-
-    // _songPlayer.play();
-    // _songPlayer.pause();
-    // answ-c rm hidden
-    // document.getElementById('answer-container').classList.remove('hidden');
-    // start chrono
+    initGame(SONG);
+    listenToAnswers()
+ 
   });
 });

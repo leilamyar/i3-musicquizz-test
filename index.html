@@ -9,17 +9,25 @@
 <body>
   <button id="start-game">Start Game</button>
   
-  <!-- <audio id="song-player"></audio> -->
-
-  <div id="lyrics"></div>
+  <!-- TODO: slide lyrics -->
+  <div id="lyrics"></div> 
 
   <!-- <div class="answer-container" hidden> -->
-  <div class="answer-container">
-    <label><input type="checkbox" id="a" name="a" value="a">A</label>
-    <label><input type="checkbox" id="b" name="b" value="a">B</label>
-    <label><input type="checkbox" id="c" name="c" value="c">C</label>
-    <label><input type="checkbox" id="d" name="d" value="d">D</label>
+  <div id="answer-container" hidden>
+    <div class="answer-item">
+      <input type="radio" id="a" name="a" value="a">
+      <label for="a">answer A</label></div>
+    <div class="answer-item">
+      <input type="radio" id="b" name="b" value="b">
+      <label for="b">answer B</label></div>
+    <div class="answer-item">
+      <input type="radio" id="c" name="c" value="c">
+      <label for="c">answer C</label></div>
+    <div class="answer-item">
+      <input type="radio" id="d" name="d" value="d">
+      <label for="d">answer D</label></div>
   </div>
+
 
   <div id="result"></div>
 
