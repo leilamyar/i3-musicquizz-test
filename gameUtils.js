@@ -82,8 +82,8 @@ const makeAnswerChoices2 = (correctText, tokenizedLyrics) => {
   console.log("randCorrectId :::", randCorrectId);
   console.log("rand LETTER :::", lettersList[randCorrectId]);
   
+  let currentWrongIndex = wrongSentences.length - 1;
   answersData.map((answer) => {
-    let currentWrongIndex = wrongSentences.length;
 
     if (answer.letter == lettersList[randCorrectId]) {  // Select a random letter thanks to randCorrectId
       console.log("Is correct :::", answer);
@@ -92,15 +92,16 @@ const makeAnswerChoices2 = (correctText, tokenizedLyrics) => {
       correct.push(answer);
       if (correct.length > 1) { console.log('More than 1 correct answer : correct ==', correct); }
     } else {
+      console.log("Wrong sentence at index :::", wrongSentences[currentWrongIndex]);
       answer.answerText = wrongSentences[currentWrongIndex];
       wrongs.push(answer);
       currentWrongIndex -= 1;
-      // console.log("Is wrong :::", answer);
+      console.log("Wrong sentence INDEX :::", currentWrongIndex);
     }
   });
   
   console.log("WRONGS remaining :::", wrongs);
-  console.log("CORRECT found :::", correct);
+  // console.log("CORRECT found :::", correct);
 
   correct
     .concat(wrongs)
