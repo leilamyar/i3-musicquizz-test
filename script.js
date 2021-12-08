@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function(){
    
     console.log("wrongSentences :::", wrongSentences);
     
-    // 3 because we need only 3 Wrong answers for the quizz
     // const answers = { 1: '', 2: '', 3: '', 4: '' };
     // const answers = { a: '', b: '', c: '', d: '' };
     const answers = [ { letter: 'a', answerText: '', isCorrect: false }, { letter: 'b', answerText: '', isCorrect: false }, { letter: 'c', answerText: '', isCorrect: false }, { letter: 'd', answerText: '', isCorrect: false } ];
@@ -88,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function(){
     
   
     // answers.forEach(({ letter, answerText, isCorrect }) => {
-    //   // const _a = document.querySelector('label[for="a"]');
+    //   const _a = document.querySelector('label[for="a"]');
     //   const _label = document.querySelector(`label[for="${letter}"]`);
     //   _label.innerText = answerText;
     //   _label.setAttribute('data-is-correct', isCorrect);
@@ -124,8 +123,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
     _lyrics.innerText = lyricsText;
 
-    makeAnswerChoices(toFindText, tokenizedLyrics);
-    
+    // NOK makeAnswerChoices(toFindText, tokenizedLyrics);
+    makeAnswerChoices2(toFindText, tokenizedLyrics);
     _answerContainer.removeAttribute('hidden');
 
 

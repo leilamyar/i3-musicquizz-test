@@ -18,25 +18,102 @@ const prepareLyricsForGame = (tokenizedLyrics) => {
   }
 };
   
-  // Function make Random Unique Ids
-  // Range = range of random numbers possibilities
-  // OutputLength = how many unique ids we want
-  // Return : an array of the same length of outputLength, containing the unique ids
-  function makeRandomUniqueIds(range, outputLength) {
+// Function make Random Unique Ids
+// Range = range of random numbers possibilities
+// OutputLength = how many unique ids we want
+// Return : an array of the same length of outputLength, containing the unique ids
+function makeRandomUniqueIds(range, outputLength) {
 
-    let arr = []
-    for (let i = 1; i <= range; i++) {
-      arr.push(i)
-    }
-  
-    let randomIds = [];
-  
-    for (let i = 1; i <= outputLength; i++) {
-      const random = Math.floor(Math.random() * (range - i));
-      randomIds.push(arr[random]);
-      arr[random] = arr[range - i];
-    }
-  
-    return randomIds;
+  let arr = []
+  for (let i = 1; i <= range; i++) {
+    arr.push(i)
   }
 
+  let randomIds = [];
+
+  for (let i = 1; i <= outputLength; i++) {
+    const random = Math.floor(Math.random() * (range - i));
+    randomIds.push(arr[random]);
+    arr[random] = arr[range - i];
+  }
+
+  return randomIds;
+}
+
+const makeAnswerChoices2 = (correctText, tokenizedLyrics) => {
+    
+  // 3 as 2nd parameter
+  // because we need only 3 wrong answers for the quizz
+  const randomIds = makeRandomUniqueIds(tokenizedLyrics.length, 3);
+  
+  console.log("rand ids ::", randomIds);
+  
+  const wrongSentences = [
+    tokenizedLyrics[randomIds[0]], // ex: 'We are legends'
+    tokenizedLyrics[randomIds[1]], // ex: 'Everything you want's a dream away'
+    tokenizedLyrics[randomIds[2]], // ex: 'That's what she told him!'
+  ];
+  
+  console.log("wrongSentences :::", wrongSentences);
+  
+  // Init Objects :
+  // LettersList : those will be used later for mapping with input radio id
+  const lettersList = [ 'a', 'b', 'c', 'd' ];
+  // Init wrong answers list
+  const wrongs = [];
+  // Init correct object
+  // An Array even if only 1 correct possible answer
+  // This is so that all answers (wrongs + correct) can be .concat() & .map() over later
+  const correct = [];
+  // Init data structure for HTML labels
+  const answersData = [ 
+    { letter: 'a', answerText: '', isCorrect: false }, 
+    { letter: 'b', answerText: '', isCorrect: false }, 
+    { letter: 'c', answerText: '', isCorrect: false }, 
+    { letter: 'd', answerText: '', isCorrect: false },
+  ];
+
+  // Generate a random position (for future input radio value) for correct answer
+  // Using number 4 in random calculation
+  // because we have 4 answers for the quizz
+  const randCorrectId = Math.floor(Math.random() * (4 - 1) + 1);
+  // const randCorrectLetter = Math.floor(Math.random() * (4 - 1) + 1);
+  
+  console.log("randCorrectId :::", randCorrectId);
+  console.log("rand LETTER :::", lettersList[randCorrectId]);
+  
+  answersData.map((answer) => {
+    let currentWrongIndex = wrongSentences.length;
+
+    if (answer.letter == lettersList[randCorrectId]) {  // Select a random letter thanks to randCorrectId
+      console.log("Is correct :::", answer);
+      answer.answerText = correctText;
+      answer.isCorrect = true;
+      correct.push(answer);
+      if (correct.length > 1) { console.log('More than 1 correct answer : correct ==', correct); }
+    } else {
+      answer.answerText = wrongSentences[currentWrongIndex];
+      wrongs.push(answer);
+      currentWrongIndex -= 1;
+      // console.log("Is wrong :::", answer);
+    }
+  });
+  
+  console.log("WRONGS remaining :::", wrongs);
+  console.log("CORRECT found :::", correct);
+
+  correct
+    .concat(wrongs)
+    // .forEach(({ letter, answerText, isCorrect }) => {
+    .forEach((dataForLabel) => {
+      console.log('Data for Label ::', dataForLabel);
+      // const _a = document.querySelector('label[for="a"]');
+      const _label = document.querySelector(`label[for="${dataForLabel.letter}"]`);
+      _label.innerText = dataForLabel.answerText;
+      _label.setAttribute('data-is-correct', dataForLabel.isCorrect);
+      // const _label = document.querySelector(`label[for="${letter}"]`);
+      // _label.innerText = answerText;
+      // _label.setAttribute('data-is-correct', isCorrect);
+    });
+
+};
