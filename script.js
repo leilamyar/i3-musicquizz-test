@@ -4,9 +4,11 @@ document.addEventListener("DOMContentLoaded", function(){
   // =============== ELEM from the DOM =================
   // ===================================================
 
-  const _startGameBtn = document.getElementById('start-game');
+  const _startBtn = document.getElementById('start-game');
   const _lyrics = document.getElementById('lyrics');
   const _answerContainer = document.getElementById('answer-container');
+  const _playerId = document.getElementById('player-id');
+  const _score = document.getElementById('score');
   const _radioInputs = document.querySelectorAll('input[type="radio"]');
   
   // ===================================================
@@ -17,6 +19,10 @@ document.addEventListener("DOMContentLoaded", function(){
     playerId: 18,
     score: 0,
   };
+
+  _playerId.innerText = gameState.playerId;
+  _score.innerText = gameState.score;
+
   // var answerChoices = 0;
   
   // Re init radio input state
@@ -37,12 +43,15 @@ document.addEventListener("DOMContentLoaded", function(){
               if (radio.dataset.isCorrect == "true") { // DATASET stores STRING values ! not BOOLEANS
                   // console.log('Player\'s', radio.value, 'is CORRECT');
                   console.log('Player\'s is CORRECT');
-                  console.log('ANSWER ::', radio);
+                  // console.log('ANSWER ::', radio);
+                  gameState.score += 1;
+                  console.log(gameState.score);
+                  _score.innerText = gameState.score;
                 } 
                 else {
                   // console.log('Player\'s', radio.value, 'is WRONG');
                   console.log('Player\'s is WRONG');
-                  console.log('ANSWER ::', radio);
+                  // console.log('ANSWER ::', radio);
                 }
             };
           });
@@ -76,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function(){
   // ===================================================
   // ===================  ze GAME  =====================
   // ===================================================
-  _startGameBtn.addEventListener('click', () => {
+  _startBtn.addEventListener('click', () => {
     
     initGame(SONG);
     listenToAnswers();
