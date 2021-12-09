@@ -40,7 +40,15 @@ function makeRandomUniqueIds(range, outputLength) {
   return randomIds;
 }
 
-const makeAnswerChoices2 = (correctText, tokenizedLyrics) => {
+// Function makeAnswerChoices
+// 1st param : the correct lyrics to find (the correct answer choice)
+// 2nd param : the complete lyrics, as an array of sentences
+// This function randomly chooses 3 sentences in the complete lyrics array
+// which will be the wrong answers
+// The correct answer is assigned a random letter (input radio have ids a, b, c and d)
+// Then display them all (wrong choices + correct choice) in HTML
+// Correct input has an HTML attribute "isCorrect" true ; wrong inputs have the same attribute set to false.
+const makeAnswerChoices = (correctText, tokenizedLyrics) => {
     
   // 3 as 2nd parameter
   // because we need only 3 wrong answers for the quizz
