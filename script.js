@@ -4,11 +4,13 @@ document.addEventListener("DOMContentLoaded", function(){
   // =============== ELEM from the DOM =================
   // ===================================================
 
-  const _startBtn = document.getElementById('start-game');
+   const _startBtn = document.getElementById('start-game');
   const _lyrics = document.getElementById('lyrics');
   const _answerContainer = document.getElementById('answer-container');
   const _playerId = document.getElementById('player-id');
   const _score = document.getElementById('score');
+  const _artist = document.getElementById('artist');
+  const _title = document.getElementById('title');
   const _radioInputs = document.querySelectorAll('input[type="radio"]');
   
   // ===================================================
@@ -20,8 +22,12 @@ document.addEventListener("DOMContentLoaded", function(){
     score: 0,
   };
 
-  _playerId.innerText = gameState.playerId;
-  _score.innerText = gameState.score;
+
+
+  // _playerId.innerText = gameState.playerId;
+  // _score.innerText = gameState.score;
+  // _artist.innerText = gameState.score;
+  // _title.innerText = gameState.title;
 
   // var answerChoices = 0;
   

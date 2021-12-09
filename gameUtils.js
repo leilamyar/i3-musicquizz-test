@@ -1,4 +1,5 @@
 const prepareLyricsForGame = (tokenizedLyrics) => {
+// const getCutLyricsAndCorrectChoice = (tokenizedLyrics) => {
 
   const randomizedIndex = Math.floor(Math.random() * (tokenizedLyrics.length - 1) + 1);
   // const randomizedIndex = 18;
@@ -125,3 +126,5 @@ const makeAnswerChoices = (correctText, tokenizedLyrics) => {
     });
 
 };
+
+ 
