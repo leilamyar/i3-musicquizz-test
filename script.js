@@ -29,8 +29,18 @@ document.addEventListener("DOMContentLoaded", function(){
 
   var CURRENT_SONG;
 
+  const endGame = (playerId, score) => {
+    console.log('Make AJAX req here::', score);
+  };
+
   const getCurrentSong = (currentSongId) => { 
-    return SONGS[currentSongId];
+    // console.log('TOTAL number of songs :',SONGS.length);
+    if (currentSongId < SONGS.length) {
+      return SONGS[currentSongId];
+    } else {
+      console.log('No More Songs - currentSongId sent ::', gameState.currentSongId);
+      endGame(gameState.playerId, gameState.score);
+    }
   };
   
   const displaySongData = (song) => {
@@ -78,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function(){
     _radioInputs
         .forEach((radio) => {
           radio.addEventListener("change", function(event) {
+            // TODO: disable radios
             let radio = event.target;
             if (radio.checked) {
               if (radio.dataset.isCorrect == "true") { // DATASET stores STRING values ! not BOOLEANS
