@@ -13,7 +13,10 @@ document.addEventListener("DOMContentLoaded", function(){
   // ================= GAME STATE ======================
   // ===================================================
   
-  var scoreState = 0;
+  var gameState = {
+    playerId: 18,
+    score: 0,
+  };
   // var answerChoices = 0;
   
   // Re init radio input state

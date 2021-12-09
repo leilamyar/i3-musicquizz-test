@@ -64,7 +64,7 @@ const makeAnswerChoices = (correctText, tokenizedLyrics) => {
   
   console.log("wrongSentences :::", wrongSentences);
   
-  // Init Objects :
+  // --------------------------- Init Objects ----------------------------
   // LettersList : those will be used later for mapping with input radio id
   const lettersList = [ 'a', 'b', 'c', 'd' ];
   // Init wrong answers list
@@ -73,7 +73,8 @@ const makeAnswerChoices = (correctText, tokenizedLyrics) => {
   // An Array even if only 1 correct possible answer
   // This is so that all answers (wrongs + correct) can be .concat() & .map() over later
   const correct = [];
-  // Init data structure for HTML labels
+
+  // ---------- Init Data Structure for HTML Labels / Inputs --------------
   const answersData = [ 
     { letter: 'a', answerText: '', isCorrect: false }, 
     { letter: 'b', answerText: '', isCorrect: false }, 
@@ -81,14 +82,14 @@ const makeAnswerChoices = (correctText, tokenizedLyrics) => {
     { letter: 'd', answerText: '', isCorrect: false },
   ];
 
+  // ----------------- Randomly Assign Answer Choices --------------------
   // Generate a random position (for future input radio value) for correct answer
   // Using number 4 in random calculation
   // because we have 4 answers for the quizz
   const randCorrectId = Math.floor(Math.random() * (4 - 1) + 1);
-  // const randCorrectLetter = Math.floor(Math.random() * (4 - 1) + 1);
   
-  console.log("randCorrectId :::", randCorrectId);
-  console.log("rand LETTER :::", lettersList[randCorrectId]);
+  // console.log("randCorrectId :::", randCorrectId);
+  // console.log("rand LETTER :::", lettersList[randCorrectId]);
   
   let currentWrongIndex = wrongSentences.length - 1;
   answersData.map((answer) => {
@@ -100,29 +101,27 @@ const makeAnswerChoices = (correctText, tokenizedLyrics) => {
       correct.push(answer);
       if (correct.length > 1) { console.log('More than 1 correct answer : correct ==', correct); }
     } else {
-      console.log("Wrong sentence at index :::", wrongSentences[currentWrongIndex]);
+      // console.log("Wrong sentence at index :::", wrongSentences[currentWrongIndex]);
       answer.answerText = wrongSentences[currentWrongIndex];
       wrongs.push(answer);
       currentWrongIndex -= 1;
-      console.log("Wrong sentence INDEX :::", currentWrongIndex);
+      // console.log("Wrong sentence INDEX :::", currentWrongIndex);
     }
   });
   
-  console.log("WRONGS remaining :::", wrongs);
+  // console.log("WRONGS remaining :::", wrongs);
   // console.log("CORRECT found :::", correct);
 
+
+  // ---------- Set HTML Label + Input for each Answer Choice --------------
   correct
     .concat(wrongs)
-    // .forEach(({ letter, answerText, isCorrect }) => {
     .forEach((dataForLabel) => {
-      console.log('Data for Label ::', dataForLabel);
-      // const _a = document.querySelector('label[for="a"]');
+      // console.log('Data for Label ::', dataForLabel);
+      const _input = document.querySelector(`#${dataForLabel.letter}`);
+      _input.setAttribute('data-is-correct', dataForLabel.isCorrect);
       const _label = document.querySelector(`label[for="${dataForLabel.letter}"]`);
       _label.innerText = dataForLabel.answerText;
-      _label.setAttribute('data-is-correct', dataForLabel.isCorrect);
-      // const _label = document.querySelector(`label[for="${letter}"]`);
-      // _label.innerText = answerText;
-      // _label.setAttribute('data-is-correct', isCorrect);
     });
 
 };
