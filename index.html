@@ -7,21 +7,27 @@
   <title>Document</title>
 </head>
 <body>
+
+  <!-- btn START game -->
   <button id="start-game">Start Game</button>
   
+  <!-- Player -->
   <div style="background: lightgrey; width: 40rem; display: flex; justify-content: space-around;">
     <p style="margin-inline: 1.5rem;">Player <span id="player-id"></span></p>
     <p>Score : <span id="score">0</span></p>
   </div> 
+
+  <!-- Song -->
   <div style="background: lightgrey; width: 40rem; display: flex; justify-content: space-around;">
     <p style="margin-inline: 1.5rem;"><span id="artist"></span></p>
     <p><span id="title"></span></p>
   </div> 
-  <!-- TODO: slide lyrics -->
-  <div id="lyrics" style="height: 150px; overflow-y: scroll; padding-block: 1rem; background: lightblue; width: 40rem;"></div> 
 
+  <!-- Lyrics -->
+  <div id="lyrics" style="height: 150px; overflow-y: scroll; padding-block: 1rem; background: lightblue; width: 40rem;"></div> 
+  
+  <!-- Answers -->
   <div id="answer-container" style="margin: 1.5rem;" hidden>
-  <!-- <div id="answer-container"> -->
     <div class="answer-item">
       <input type="radio" id="a" name="a" value="a">
       <label for="a">answer A</label></div>
@@ -36,14 +42,11 @@
       <label for="d">answer D</label></div>
   </div>
 
-
+  <!-- Message Well Done / Too Bad -->
   <div id="result"></div>
-
-  <!-- <div id="score"></div> -->
 
   <script src="fetchSong.js"></script>
   <script src="gameUtils.js"></script>
-  <!-- <script src="script.js"></script> -->
-  <script src="script2.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
