@@ -29,12 +29,21 @@ document.addEventListener("DOMContentLoaded", function(){
   // Function listenToAnswers
   // Getting all radio inputs, and listen to whenever there're checked
   const listenToAnswers = () => {
-    document.querySelectorAll("input")
+    _radioInputs
         .forEach((radio) => {
           radio.addEventListener("change", function(event) {
             let radio = event.target;
             if (radio.checked) {
-              console.log('checked answer is correct ? :', radio.dataset.isCorrect);
+              if (radio.dataset.isCorrect == "true") { // DATASET stores STRING values ! not BOOLEANS
+                  // console.log('Player\'s', radio.value, 'is CORRECT');
+                  console.log('Player\'s is CORRECT');
+                  console.log('ANSWER ::', radio);
+                } 
+                else {
+                  // console.log('Player\'s', radio.value, 'is WRONG');
+                  console.log('Player\'s is WRONG');
+                  console.log('ANSWER ::', radio);
+                }
             };
           });
         });
