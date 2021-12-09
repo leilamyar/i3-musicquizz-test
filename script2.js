@@ -14,7 +14,10 @@ document.addEventListener("DOMContentLoaded", function(){
   const _radioInputs = document.querySelectorAll('input[type="radio"]');
   const _result = document.getElementById('result');
 
-  const getCurrentSong = (currentSongId) => { return SONGS[currentSongId]; };
+  const getCurrentSong = (currentSongId) => { 
+    return SONGS[currentSongId];
+  };
+  
   const displaySongData = (song) => {
     _artist.innerText = song.artist;
     _title.innerText = song.title;
@@ -52,9 +55,6 @@ document.addEventListener("DOMContentLoaded", function(){
   // gameState = Object.assign(gameState, { playerId: 8 });
 
   const initSong = () => {
-    // Re init radio input state
-    _radioInputs.forEach((ri) => ri.checked = false );
-
     // Set Current Song
     CURRENT_SONG = getCurrentSong(gameState.currentSongId);
     // Display artist & title
@@ -92,6 +92,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
                   _result.style.background = 'lightgreen';
                   _result.innerText = 'Well Done!';
+                  _result.removeAttribute('hidden');
                 } 
                 else {
                   // console.log('Player\'s', radio.value, 'is WRONG');
@@ -99,24 +100,71 @@ document.addEventListener("DOMContentLoaded", function(){
                   // console.log('ANSWER ::', radio);
                   _result.style.background= 'tomato';
                   _result.innerText = 'Too Bad !';
+                  _result.removeAttribute('hidden');
                 }
             };
 
+            gameState.currentSongId += 1;
+
+            setTimeout(() => {
+              _result.setAttribute('hidden', '');
+              const { correctAnswer } = initGame2();
+              // // Init Game State
+              // gameState = Object.assign(gameState, { playerId: 8 });
+              // _playerId.innerText = gameState.playerId;
+          
+              // const { correctAnswer } = initSong();
+              // initGame(SONG);
+              // listenToAnswers();
+          
+              setTimeout(() => {
+                console.log('Times Up ! Now choose...');
+                makeAndDisplayAnswers(correctAnswer, tokenizeLyrics(CURRENT_SONG.lyrics));
+                listenToAnswers();
+              }, 3000);
+
+            }, 3000);
+
+            // setTimeout(() => {
+            //     const { correctAnswer } = initSong();
+            //   // initGame(SONG);
+            //   // listenToAnswers();
+
+            //   setTimeout(() => {
+            //     console.log('Times Up ! Now choose...');
+            //     makeAndDisplayAnswers(correctAnswer, tokenizeLyrics(CURRENT_SONG.lyrics));
+            //     listenToAnswers();
+            //   }, 3000);
+            // }, 3000);
+
+            
 
           });
         });
   }
 
+  const initGame2 = () => {
+    // Re init radio input state
+    _radioInputs.forEach((ri) => ri.checked = false );
+    // _result.setAttribute('hidden', '');
+    _answerContainer.setAttribute('hidden', '');
+     // Init Game State
+    gameState = Object.assign(gameState, { playerId: 8 });
+    _playerId.innerText = gameState.playerId;
+ 
+    return initSong();
+  };
   // ===================================================
   // ===================  ze GAME  =====================
   // ===================================================
   _startBtn.addEventListener('click', () => {
     
-    // Init Game State
-    gameState = Object.assign(gameState, { playerId: 8 });
-    _playerId.innerText = gameState.playerId;
+    const { correctAnswer } = initGame2();
+    // // Init Game State
+    // gameState = Object.assign(gameState, { playerId: 8 });
+    // _playerId.innerText = gameState.playerId;
 
-    const { correctAnswer } = initSong();
+    // const { correctAnswer } = initSong();
     // initGame(SONG);
     // listenToAnswers();
 
