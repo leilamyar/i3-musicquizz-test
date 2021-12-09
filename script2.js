@@ -108,6 +108,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
             setTimeout(() => {
               _result.setAttribute('hidden', '');
+              _result.style.background= 'inherit';
+              _result.innerText = '';
               const { correctAnswer } = initGame2();
               // // Init Game State
               // gameState = Object.assign(gameState, { playerId: 8 });
@@ -151,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function(){
      // Init Game State
     gameState = Object.assign(gameState, { playerId: 8 });
     _playerId.innerText = gameState.playerId;
- 
+
     return initSong();
   };
   // ===================================================
@@ -159,9 +161,10 @@ document.addEventListener("DOMContentLoaded", function(){
   // ===================================================
   _startBtn.addEventListener('click', () => {
     
+    // let  = Object.assign(gameState, { playerId: 8 });
+    gameState = Object.assign(gameState, { score: 0, playerId:  4});
     const { correctAnswer } = initGame2();
     // // Init Game State
-    // gameState = Object.assign(gameState, { playerId: 8 });
     // _playerId.innerText = gameState.playerId;
 
     // const { correctAnswer } = initSong();
