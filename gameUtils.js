@@ -98,7 +98,6 @@ const makeAnswerChoices = (correctText, tokenizedLyrics) => {
     if (answer.letter == lettersList[randCorrectId]) {  // Select a random letter thanks to randCorrectId
       answer.answerText = correctText;
       answer.isCorrect = true;
-      console.log("Is correct :::", answer.isCorrect);
       correct.push(answer);
       if (correct.length > 1) { console.log('More than 1 correct answer : correct ==', correct); }
     } else {
