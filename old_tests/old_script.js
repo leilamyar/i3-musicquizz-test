@@ -3,14 +3,17 @@ var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
 var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
 
 var phrases = [
-  { songTitle: 'Show must go on', lang: 'en-US' },
-  { songTitle: 'Singing in the rain', lang: 'en-US' },
-  { songTitle: 'Monsieur Madame', lang: 'fr' },
-  { songTitle: 'Pour que tu m\'aimes encore', lang: 'fr' },
-  { songTitle: 'Chandelier', lang: 'en-US' },
-  { songTitle: 'Courage to change', lang: 'en-US' },
-  { songTitle: 'Le dîner', lang: 'fr' },
-  { songTitle: 'La berceuse', lang: 'fr' },
+  // { songTitle: 'Show must go on', lang: 'en-US' },
+  // { songTitle: 'Singing in the rain', lang: 'en-US' },
+  // { songTitle: 'Monsieur Madame', lang: 'fr' },
+  // { songTitle: 'Pour que tu m\'aimes encore', lang: 'fr' },
+  // { songTitle: 'Chandelier', lang: 'en-US' },
+  // { songTitle: 'Courage to change', lang: 'en-US' },
+  // { songTitle: 'Le dîner', lang: 'fr' },
+  // { songTitle: 'La berceuse', lang: 'fr' },
+  { songTitle: 'gaan', lang: 'nl-BE' },
+  { songTitle: 'dus', lang: 'nl-BE' },
+  { songTitle: 'een stuk krijt', lang: 'nl-BE' },
 ];
 
 var phrasePara = document.querySelector('.phrase');
